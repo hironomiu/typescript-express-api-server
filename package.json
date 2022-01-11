@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "build": "tsc",
     "serve": "ts-node src/index.ts"
   },
   "devDependencies": {

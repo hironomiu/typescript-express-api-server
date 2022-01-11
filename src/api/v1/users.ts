@@ -1,5 +1,4 @@
 import { Router } from 'express'
-import promisePool from '../../database'
 
 const users = Router()
 
