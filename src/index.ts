@@ -10,8 +10,10 @@ import session from 'express-session'
 import users from './api/v1/users'
 import csrfToken from './api/v1/csrfToken'
 import auth from './api/v1/auth'
+import './config'
+import { PRODUCTION_MODE, SERVER_PORT } from './config'
 
-const PORT = 5555
+console.log(PRODUCTION_MODE)
 const app = express()
 const server = http.createServer(app)
 
@@ -38,8 +40,8 @@ app.use(cookieParser())
 
 // trust first proxy
 app.set('trust proxy', 1)
-// TODO dotenv
-const isProduction = false
+// dev or production
+const isProduction = PRODUCTION_MODE === 'dev' ? false : true
 app.use(
   session({
     name: 'session',
@@ -90,6 +92,6 @@ app.use(
 )
 
 // Server Listen
-server.listen(PORT, () => {
-  console.log(`express listening on *:${PORT}`)
+server.listen(SERVER_PORT, () => {
+  console.log(`express listening on *:${SERVER_PORT}`)
 })
