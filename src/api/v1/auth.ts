@@ -1,8 +1,7 @@
 import { Router, Request } from 'express'
 import passport from 'passport'
 import bcrypt from 'bcrypt'
-import promisePool from '../../database'
-import { FieldPacket, OkPacket, ResultSetHeader, RowDataPacket } from 'mysql2'
+import { createUser } from '../../models/User'
 
 const auth = Router()
 
@@ -10,16 +9,16 @@ const auth = Router()
 auth.post('/signup', async (req: Request, res, next) => {
   try {
     const saltRounds = 10
-    const hashPassword = await new Promise((resolve, reject) =>
+    const hashPassword: string = await new Promise((resolve, reject) =>
       bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
         if (err) reject({ message: 'hashed error', err: err })
         resolve(hash)
       })
     )
-    // TODO 型について　is not assignable to type 'ResultSetHeader'.
-    const ret: any = await promisePool.query(
-      'insert into users(name,email,password) values(?,?,?)',
-      [req.body.username, req.body.email, hashPassword]
+    const ret = await createUser(
+      req.body.username,
+      req.body.email,
+      hashPassword
     )
     res.json({ message: 'success', insertId: ret[0].insertId })
   } catch (err) {

@@ -12,6 +12,7 @@ import csrfToken from './api/v1/csrfToken'
 import auth from './api/v1/auth'
 import './config'
 import { PRODUCTION_MODE, SERVER_PORT } from './config'
+import { getUser } from './models/User'
 
 console.log(PRODUCTION_MODE)
 const app = express()
@@ -67,15 +68,13 @@ authPassport(app)
 
 // 仮のリクエスト受付
 app.get('/', checkAuthentication, async (req: any, res) => {
-  const [rows, fields]: [RowDataPacket[number], any] = await promisePool.query(
-    'select id,name,email from users where id = ?',
-    [req.session.userId]
-  )
+  const row: any = await getUser(req.session.userId)
+  console.log('row:', row)
   res.json({
-    message: `hello username is ${rows[0].name}`,
-    id: rows[0].id,
-    name: rows[0].name,
-    email: rows[0].email,
+    message: `hello username is ${row.name}`,
+    id: row.id,
+    name: row.name,
+    email: row.email,
   })
 })
 
