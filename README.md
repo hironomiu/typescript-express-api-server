@@ -47,6 +47,18 @@ DB_DATABASE=express_api
 DB_PORT=3306
 ```
 
+## curl memo
+
+```
+curl --request POST \
+  --url http://localhost:5555/api/v1/auth/signin \
+  --header 'content-type: application/json' \
+  --header 'user-agent: vscode-restclient' \
+  --header 'CSRF-Token: IJQ0iR69-hur4jIuqAQCX8UQP_5cQwZzCBWA' \
+  --cookie '_csrf=4vikgedSjAt6lTfBXKwnx1dH' \
+  --data '{"email":"taro@example.com","username":"taro","password":"password"}'
+```
+
 ## Install Memo
 
 ### TypeScript

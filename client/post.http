@@ -1,8 +1,9 @@
 POST  http://localhost:5555 HTTP/1.1
 content-type: application/json
+CSRF-Token: akwT2xZH-IOt2o7b3wJjSS-VsGE7v4nq5d2E
 
 {
-    "email":"jiro@example.com",
+    "email":"taro@example.com",
     "username":"taro",
     "password":"password"
 }

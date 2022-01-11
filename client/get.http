@@ -1,2 +1,4 @@
-GET  http://localhost:5555 HTTP/1.1
+GET  http://localhost:5555/api/v1/csrf-token HTTP/1.1
 content-type: application/json
+
+

@@ -1,0 +1,7 @@
+curl --request GET \
+  --url http://localhost:5555 \
+  --header 'content-type: application/json' \
+  --header 'user-agent: vscode-restclient' \
+  --header 'CSRF-Token: IJQ0iR69-hur4jIuqAQCX8UQP_5cQwZzCBWA' \
+  --cookie '_csrf=4vikgedSjAt6lTfBXKwnx1dH' \
+  --cookie 'session=s%3AbohwSfwllqb86prNvbodJfIfe-pIEX3z.WOmVTIi%2F4dvgZ%2FdM8PWXwcTJS5sQteytevRKFZ6vwAU' 
