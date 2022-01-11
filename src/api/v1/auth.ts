@@ -1,10 +1,31 @@
-import { Router } from 'express'
+import { Router, Request } from 'express'
 import passport from 'passport'
+import bcrypt from 'bcrypt'
+import promisePool from '../../database'
+import { resolve } from 'path/posix'
 
 const auth = Router()
 
 // ユーザ登録
-auth.post('signup', (req, res, next) => {})
+auth.post('/signup', async (req: Request, res, next) => {
+  try {
+    const saltRounds = 10
+    const hashPassword = await new Promise((resolve, reject) =>
+      bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
+        if (err) reject({ message: 'hashed error', err: err })
+        resolve(hash)
+      })
+    )
+    const ret = await promisePool.query(
+      'insert into users(name,email,password) values(?,?,?)',
+      [req.body.username, req.body.email, hashPassword]
+    )
+    res.json({ message: 'success' })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({ message: 'fail' })
+  }
+})
 
 // ログイン
 auth.post('/signin', (req: any, res, next) => {
