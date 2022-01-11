@@ -64,11 +64,11 @@ app.use(csrfProtection)
 authPassport(app)
 
 // 仮のリクエスト受付
-app.get('/', checkAuthentication, async (req, res) => {
+app.get('/', checkAuthentication, async (req: any, res) => {
   const [rows, fields]: [RowDataPacket[number], any] = await promisePool.query(
-    'select * from users'
+    'select id,name,email from users where id = ?',
+    [req.session.userId]
   )
-  console.log(rows[0])
   res.json({
     message: `hello username is ${rows[0].name}`,
     id: rows[0].id,
@@ -77,7 +77,7 @@ app.get('/', checkAuthentication, async (req, res) => {
   })
 })
 
-// ルーティング
+// Routing
 app.use(
   '/api/v1',
   (() => {
@@ -89,7 +89,7 @@ app.use(
   })()
 )
 
-// サーバリッスン
+// Server Listen
 server.listen(PORT, () => {
   console.log(`express listening on *:${PORT}`)
 })
