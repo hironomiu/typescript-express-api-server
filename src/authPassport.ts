@@ -1,9 +1,8 @@
 import { Express, NextFunction, Response } from 'express'
-import { RowDataPacket } from 'mysql2'
 import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
-import promisePool from './database'
 import bcrypt from 'bcrypt'
+import { getUserAuth, UserAuth } from './models/User'
 
 const authPassport = (app: Express) => {
   app.use(passport.initialize())
@@ -30,23 +29,14 @@ const authPassport = (app: Express) => {
         passwordField: 'password',
       },
       async (username, password, done) => {
-        const [rows, fields]: [RowDataPacket[number], any] =
-          await promisePool.query(
-            'select id,name,password,email from users where name = ?',
-            [username]
-          )
+        const row: UserAuth = await getUserAuth(username)
         const isValid = await new Promise((resolve, reject) =>
-          bcrypt.compare(
-            password,
-            rows[0].password.toString(),
-            (err, isValid) => {
-              resolve(isValid)
-            }
-          )
+          bcrypt.compare(password, row.password, (err, isValid) => {
+            resolve(isValid)
+          })
         )
-        if (!rows)
-          return done(null, { isSuccess: false, message: '認証エラー' })
-        if (username !== rows[0].name) {
+        if (!row) return done(null, { isSuccess: false, message: '認証エラー' })
+        if (username !== row.name) {
           return done(null, { isSuccess: false, message: '認証エラー' })
         } else if (!isValid) {
           console.log('!isValid')
@@ -54,9 +44,9 @@ const authPassport = (app: Express) => {
         } else {
           return done(null, {
             isSuccess: true,
-            id: rows[0].id,
-            name: rows[0].name,
-            email: rows[0].email,
+            id: row.id,
+            name: row.name,
+            email: row.email,
           })
         }
       }
