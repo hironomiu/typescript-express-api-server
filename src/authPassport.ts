@@ -1,22 +1,24 @@
 import { Express, NextFunction, Response } from 'express'
+import { RowDataPacket } from 'mysql2'
 import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
-
-// TODO MySQLからusersを取得、bcryptでパスワードをハッシュ化する
-const User1 = { username: 'taro', password: 'password' }
+import promisePool from './database'
 
 const authPassport = (app: Express) => {
   app.use(passport.initialize())
   app.use(passport.session())
 
+  // TODO 呼ばれるタイミングを確認する
   passport.serializeUser((user, done) => {
     console.log('serializeUser')
-    done(null, User1.username)
+    done(null, user)
   })
 
-  passport.deserializeUser((user, done) => {
+  // TODO 呼ばれるタイミングを確認する
+  // TODO userの型について
+  passport.deserializeUser((user: any, done) => {
     console.log('deserializeUser')
-    done(null, User1.username)
+    done(null, user)
   })
 
   passport.use(
@@ -25,15 +27,27 @@ const authPassport = (app: Express) => {
         usernameField: 'username',
         passwordField: 'password',
       },
-      (username, password, done) => {
-        if (username !== User1.username) {
+      async (username, password, done) => {
+        const [rows, fields]: [RowDataPacket[number], any] =
+          await promisePool.query(
+            'select id,name,password from users where name = ?',
+            [username]
+          )
+        if (!rows)
           return done(null, { isSuccess: false, message: '認証エラー' })
-        } else if (password !== User1.password) {
+        if (username !== rows[0].name) {
+          return done(null, { isSuccess: false, message: '認証エラー' })
+        } else if (password !== rows[0].password) {
           return done(null, { isSuccess: false, message: '認証エラー' })
         } else {
           // return done(null, { isSuccess: true, message: '認証成功' })
-          return done(null, username)
+          return done(null, {
+            id: rows[0].id,
+            name: rows[0].name,
+            email: rows[0].email,
+          })
         }
+        return done(null, { isSuccess: false, message: '認証エラー' })
       }
     )
   )
@@ -50,7 +64,7 @@ export const checkAuthentication = (
   next: NextFunction
 ) => {
   // if (req.isAuthenticated()) {
-  if (req.session.user) {
+  if (req.session.userId) {
     console.log('認証済み')
     next()
   } else {

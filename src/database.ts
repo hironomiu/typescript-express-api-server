@@ -6,7 +6,7 @@ const pool = mysql.createPool({
   host: '127.0.0.1',
   user: 'root',
   password: 'mysql',
-  database: 'test',
+  database: 'express_api',
   port: 3306,
 })
 

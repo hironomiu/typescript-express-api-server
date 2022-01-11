@@ -6,10 +6,10 @@ import csrf from 'csurf'
 import promisePool from './database'
 import { RowDataPacket } from 'mysql2'
 import authPassport, { checkAuthentication } from './authPassport'
-import passport from 'passport'
 import session from 'express-session'
 import users from './api/v1/users'
 import csrfToken from './api/v1/csrfToken'
+import auth from './api/v1/auth'
 
 const PORT = 5555
 const app = express()
@@ -64,27 +64,15 @@ authPassport(app)
 // 仮のリクエスト受付
 app.get('/', checkAuthentication, async (req, res) => {
   const [rows, fields]: [RowDataPacket[number], any] = await promisePool.query(
-    'select 1 as num'
+    'select * from users'
   )
-  res.json({ message: `hello num is ${rows[0].num}` })
-})
-
-// TODO 正式な認証用のエンドポイントに切り替える
-app.post('/', async (req: any, res, next) => {
-  console.log('post /:', req.session)
-  passport.authenticate('local', { session: true }, (err, user, info) => {
-    if (err) {
-      return next(err)
-    }
-    if (!user) {
-      // infoではなく別途メッセージをレスポンス
-      return res.json({ isSuccess: false, message: '認証エラー' })
-    }
-    // TODO reqに埋め込む値をusersから取得したものに切り替える
-    req.user = 'fuga'
-    req.session.user = 'fuga'
-    return res.json(user)
-  })(req, res, next)
+  console.log(rows[0])
+  res.json({
+    message: `hello username is ${rows[0].name}`,
+    id: rows[0].id,
+    name: rows[0].name,
+    email: rows[0].email,
+  })
 })
 
 // ルーティング
@@ -94,6 +82,7 @@ app.use(
     const router = express.Router()
     router.use('/users', users)
     router.use('/csrf-token', csrfToken)
+    router.use('/auth', auth)
     return router
   })()
 )

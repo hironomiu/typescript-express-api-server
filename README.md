@@ -8,6 +8,26 @@ TypeScript + Express + Passport + mysql2 での API サーバ
 npm run serve
 ```
 
+## Database & Table & Dummy Data
+
+```
+create database express_api;
+
+CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+);
+
+insert into users(name,email,password) values('taro','taro@example.com','password');
+
+```
+
 ## Install Memo
 
 ```
