@@ -38,13 +38,15 @@ app.use(cookieParser())
 
 // trust first proxy
 app.set('trust proxy', 1)
+// TODO dotenv
+const isProduction = false
 app.use(
   session({
     name: 'session',
     secret: 'yoursecretkeyword',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false },
+    cookie: { secure: isProduction },
   })
 )
 

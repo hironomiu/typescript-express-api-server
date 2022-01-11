@@ -2,7 +2,7 @@ import { Router, Request } from 'express'
 import passport from 'passport'
 import bcrypt from 'bcrypt'
 import promisePool from '../../database'
-import { resolve } from 'path/posix'
+import { FieldPacket, OkPacket, ResultSetHeader, RowDataPacket } from 'mysql2'
 
 const auth = Router()
 
@@ -16,11 +16,12 @@ auth.post('/signup', async (req: Request, res, next) => {
         resolve(hash)
       })
     )
-    const ret = await promisePool.query(
+    // TODO 型について　is not assignable to type 'ResultSetHeader'.
+    const ret: any = await promisePool.query(
       'insert into users(name,email,password) values(?,?,?)',
       [req.body.username, req.body.email, hashPassword]
     )
-    res.json({ message: 'success' })
+    res.json({ message: 'success', insertId: ret[0].insertId })
   } catch (err) {
     console.log(err)
     res.status(400).json({ message: 'fail' })
@@ -36,10 +37,9 @@ auth.post('/signin', (req: any, res, next) => {
     }
     if (!user) {
       // infoではなく別途メッセージをレスポンス
-      return res.json({ isSuccess: false, message: '認証エラー' })
+      return res.status(400).json({ isSuccess: false, message: '認証エラー' })
     }
-    // TODO reqに埋め込む値をusersから取得したものに切り替える
-    // req.user = 'fuga'
+    // TODO ログイン後の状態を持つのに妥当か確認
     req.session.userId = user.id
     req.session.username = user.name
     req.session.email = user.email

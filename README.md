@@ -10,8 +10,12 @@ npm run serve
 
 ## Database & Table & Dummy Data
 
+`taro`のパスワード(平文)は`password`
+
 ```
 create database express_api;
+
+drop table users;
 
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -24,7 +28,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `email` (`email`)
 );
 
-insert into users(name,email,password) values('taro','taro@example.com','password');
+insert into users(name,email,password) values('taro','taro@example.com','$2b$10$wFi8RBzI3EpHt6XxqxLdLO41437B8RniV6ytM6NAACNPdFbjPj3je');
 
 ```
 
