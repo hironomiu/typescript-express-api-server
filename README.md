@@ -43,7 +43,7 @@ npm install -D typescript @types/node ts-node
 ### Packages
 
 ```
-npm install express mysql2 cors jsonwebtoken cookie-parser csurf express-validator express-session bcrypt
+npm install express mysql2 cors jsonwebtoken cookie-parser csurf express-validator express-session bcrypt dotenv
 
 npm install -D @types/express types/mysql2# @types/cors @types/jsonwebtoken @types/cookie-parser @types/csurf @types/express-validator @types/express-session @types/cookie-session @types/bcrypt
 ```
