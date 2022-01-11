@@ -29,7 +29,6 @@ auth.post('/signup', async (req: Request, res, next) => {
 
 // ログイン
 auth.post('/signin', (req: any, res, next) => {
-  console.log('post /:', req.session)
   passport.authenticate('local', { session: true }, (err, user, info) => {
     if (err) {
       return next(err)

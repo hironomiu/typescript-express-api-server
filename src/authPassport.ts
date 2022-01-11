@@ -15,8 +15,7 @@ const authPassport = (app: Express) => {
   })
 
   // TODO 呼ばれるタイミングを確認する
-  // TODO userの型について
-  passport.deserializeUser((user: any, done) => {
+  passport.deserializeUser((user: Express.User, done) => {
     console.log('deserializeUser')
     done(null, user)
   })
@@ -24,19 +23,18 @@ const authPassport = (app: Express) => {
   passport.use(
     new LocalStrategy(
       {
-        // TODO 認証は`username`ではなく`email`にする
-        usernameField: 'username',
+        usernameField: 'email',
         passwordField: 'password',
       },
-      async (username, password, done) => {
-        const row: UserAuth = await getUserAuth(username)
+      async (email, password, done) => {
+        const row: UserAuth = await getUserAuth(email)
         const isValid = await new Promise((resolve, reject) =>
           bcrypt.compare(password, row.password, (err, isValid) => {
             resolve(isValid)
           })
         )
         if (!row) return done(null, { isSuccess: false, message: '認証エラー' })
-        if (username !== row.name) {
+        if (email !== row.email) {
           return done(null, { isSuccess: false, message: '認証エラー' })
         } else if (!isValid) {
           console.log('!isValid')

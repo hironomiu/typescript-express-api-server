@@ -32,6 +32,21 @@ insert into users(name,email,password) values('taro','taro@example.com','$2b$10$
 
 ```
 
+## .env
+
+`./.env`を環境に合わせて設定(以下例)
+
+```
+SERVER_PORT=5555
+CORS_ALLOWED_ORIGIN='http://localhost:3001 http://localhost:4000'
+PRODUCTION_MODE=dev
+DB_HOST=127.0.0.1
+DB_USER=root
+DB_PASSWORD=mysql
+DB_DATABASE=express_api
+DB_PORT=3306
+```
+
 ## Install Memo
 
 ### TypeScript

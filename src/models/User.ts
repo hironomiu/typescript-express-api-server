@@ -1,5 +1,4 @@
 import { RowDataPacket } from 'mysql2'
-import { UserInfo } from 'os'
 import promisePool from '../database'
 
 export type User = {
@@ -27,12 +26,11 @@ export type UserAuth = {
   updated_at: Date
 }
 
-export const getUserAuth = async (username: string): Promise<UserAuth> => {
+export const getUserAuth = async (email: string): Promise<UserAuth> => {
   const [rows, fields]: [RowDataPacket[number], any] = await promisePool.query(
-    'select id,name,email,password,created_at,updated_at from users where name = ?',
-    [username]
+    'select id,name,email,password,created_at,updated_at from users where email = ?',
+    [email]
   )
-
   return rows[0]
 }
 

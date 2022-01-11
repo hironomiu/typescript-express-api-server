@@ -9,10 +9,9 @@ import users from './api/v1/users'
 import csrfToken from './api/v1/csrfToken'
 import auth from './api/v1/auth'
 import './config'
-import { PRODUCTION_MODE, SERVER_PORT } from './config'
+import { CORS_ALLOWED_ORIGIN, PRODUCTION_MODE, SERVER_PORT } from './config'
 import { getUser } from './models/User'
 
-console.log(PRODUCTION_MODE)
 const app = express()
 const server = http.createServer(app)
 
@@ -29,7 +28,7 @@ app.use(
 // CORS
 app.use(
   cors({
-    origin: ['http://localhost:3001'],
+    origin: CORS_ALLOWED_ORIGIN,
     credentials: true,
     optionsSuccessStatus: 200,
   })
@@ -47,20 +46,22 @@ app.use(
     secret: 'yoursecretkeyword',
     resave: false,
     saveUninitialized: false,
+    // localhostではなくhttpsが使える環境の場合はPRODUCTION_MODEを変更しtrueで運用する
     cookie: { secure: isProduction },
   })
 )
 
 // CSRF sessionの設定後に設定する(先に設定すると'Error: misconfigured csrf'で怒られる)
-const csrfProtection = csrf({
-  cookie: {
-    httpOnly: true,
-    secure: true,
-    path: '/',
-    sameSite: 'none',
-  },
-})
-app.use(csrfProtection)
+app.use(
+  csrf({
+    cookie: {
+      httpOnly: true,
+      secure: true,
+      path: '/',
+      sameSite: 'none',
+    },
+  })
+)
 
 authPassport(app)
 
