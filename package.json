@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && cp .env ./build/.env",
     "serve": "ts-node src/index.ts"
   },
   "devDependencies": {

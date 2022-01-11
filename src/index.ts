@@ -12,6 +12,8 @@ import './config'
 import { CORS_ALLOWED_ORIGIN, PRODUCTION_MODE, SERVER_PORT } from './config'
 import { getUser } from './models/User'
 
+console.log(CORS_ALLOWED_ORIGIN)
+
 const app = express()
 const server = http.createServer(app)
 
