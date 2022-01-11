@@ -5,6 +5,7 @@ export const SERVER_PORT = process.env.SERVER_PORT || 5555
 export const CORS_ALLOWED_ORIGIN = process.env.CORS_ALLOWED_ORIGIN?.split(
   ' '
 ) || ['http://localhost:3001']
+export const SESSION_SECRET = process.env.SESSION_SECRET || 'yoursecretkeyword'
 export const PRODUCTION_MODE = process.env.PRODUCTION_MODE || 'dev'
 export const DB_HOST = process.env.DB_HOST || '127.0.0.1'
 export const DB_USER = process.env.DB_USER || 'root'

@@ -9,10 +9,13 @@ import users from './api/v1/users'
 import csrfToken from './api/v1/csrfToken'
 import auth from './api/v1/auth'
 import './config'
-import { CORS_ALLOWED_ORIGIN, PRODUCTION_MODE, SERVER_PORT } from './config'
+import {
+  CORS_ALLOWED_ORIGIN,
+  PRODUCTION_MODE,
+  SERVER_PORT,
+  SESSION_SECRET,
+} from './config'
 import { getUser } from './models/User'
-
-console.log(CORS_ALLOWED_ORIGIN)
 
 const app = express()
 const server = http.createServer(app)
@@ -45,7 +48,7 @@ const isProduction = PRODUCTION_MODE === 'dev' ? false : true
 app.use(
   session({
     name: 'session',
-    secret: 'yoursecretkeyword',
+    secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     // localhostではなくhttpsが使える環境の場合はPRODUCTION_MODEを変更しtrueで運用する
@@ -70,7 +73,6 @@ authPassport(app)
 // 仮のリクエスト受付
 app.get('/', checkAuthentication, async (req: any, res) => {
   const row: any = await getUser(req.session.userId)
-  console.log('row:', row)
   res.json({
     message: `hello username is ${row.name}`,
     id: row.id,

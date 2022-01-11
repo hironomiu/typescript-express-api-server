@@ -37,7 +37,6 @@ const authPassport = (app: Express) => {
         if (email !== row.email) {
           return done(null, { isSuccess: false, message: '認証エラー' })
         } else if (!isValid) {
-          console.log('!isValid')
           return done(null, { isSuccess: false, message: '認証エラー' })
         } else {
           return done(null, {

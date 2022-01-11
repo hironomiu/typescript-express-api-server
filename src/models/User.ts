@@ -14,6 +14,7 @@ export const getUser = async (id: number): Promise<User> => {
     'select id,name,email,created_at,updated_at from users where id = ?',
     [id]
   )
+
   return rows[0]
 }
 
@@ -31,6 +32,7 @@ export const getUserAuth = async (email: string): Promise<UserAuth> => {
     'select id,name,email,password,created_at,updated_at from users where email = ?',
     [email]
   )
+
   return rows[0]
 }
 
