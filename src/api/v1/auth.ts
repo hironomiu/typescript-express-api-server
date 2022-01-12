@@ -30,7 +30,6 @@ auth.post('/signup', async (req: Request, res, next) => {
 
 // ログイン状態確認
 auth.get('/signin', checkAuthentication, (req, res) => {
-  console.log('signin')
   res.json({ message: 'success' })
 })
 
