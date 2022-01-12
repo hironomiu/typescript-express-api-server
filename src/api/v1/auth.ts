@@ -2,6 +2,7 @@ import { Router, Request } from 'express'
 import passport from 'passport'
 import bcrypt from 'bcrypt'
 import { createUser } from '../../models/User'
+import { checkAuthentication } from '../../authPassport'
 
 const auth = Router()
 
@@ -25,6 +26,12 @@ auth.post('/signup', async (req: Request, res, next) => {
     console.log(err)
     res.status(400).json({ message: 'fail' })
   }
+})
+
+// ログイン状態確認
+auth.get('/signin', checkAuthentication, (req, res) => {
+  console.log('signin')
+  res.json({ message: 'success' })
 })
 
 // ログイン
