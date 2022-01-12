@@ -36,15 +36,19 @@ export const getUserAuth = async (email: string): Promise<UserAuth> => {
   return rows[0]
 }
 
-export const createUser = async (
-  name: string,
-  email: string,
+export const createUser = async ({
+  username,
+  email,
+  hashPassword,
+}: {
+  username: string
+  email: string
   hashPassword: string
-) => {
+}) => {
   // TODO 型について　is not assignable to type 'ResultSetHeader'.
   const ret: any = await promisePool.query(
     'insert into users(name,email,password) values(?,?,?)',
-    [name, email, hashPassword]
+    [username, email, hashPassword]
   )
 
   return ret

@@ -16,11 +16,7 @@ auth.post('/signup', async (req: Request, res, next) => {
         resolve(hash)
       })
     )
-    const ret = await createUser(
-      req.body.username,
-      req.body.email,
-      hashPassword
-    )
+    const ret = await createUser({ ...req.body, hashPassword })
     res.json({ message: 'success', insertId: ret[0].insertId })
   } catch (err) {
     console.log(err)
@@ -36,13 +32,10 @@ auth.get('/signin', checkAuthentication, (req, res) => {
 // ログイン
 auth.post('/signin', (req: any, res, next) => {
   passport.authenticate('local', { session: true }, (err, user, info) => {
-    if (err) {
-      return next(err)
-    }
-    if (!user) {
-      // infoではなく別途メッセージをレスポンス
+    if (err) return next(err)
+    // infoではなく別途メッセージをレスポンス
+    if (!user)
       return res.status(400).json({ isSuccess: false, message: '認証エラー' })
-    }
     // TODO ログイン後の状態を持つのに妥当か確認
     req.session.userId = user.id
     req.session.username = user.name
