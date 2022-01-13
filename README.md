@@ -16,6 +16,12 @@ npm run serve
 npm run build
 ```
 
+## Testing
+
+```
+npm test
+```
+
 ## Database & Table & Dummy Data
 
 `taro`のパスワード(平文)は`password`
@@ -89,6 +95,12 @@ npm install -D @types/express types/mysql2# @types/cors @types/jsonwebtoken @typ
 npm install passport passport-local
 
 npm install -D @types/passport @types/passport-local
+```
+
+### Jest
+
+```
+npm install -D jest ts-jest @types/jest supertest @types/supertest
 ```
 
 ### TypreScript Initialize

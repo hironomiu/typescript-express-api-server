@@ -14,8 +14,8 @@ const auth = Router()
 // ユーザ登録
 auth.post(
   '/signup',
-  [checkEmailIsEmpty, checkEmailFormat],
-  validator,
+  // [checkEmailIsEmpty, checkEmailFormat],
+  // validator,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const saltRounds = 10
