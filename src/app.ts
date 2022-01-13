@@ -1,5 +1,4 @@
 import express from 'express'
-// import http from 'http'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import csrf from 'csurf'
@@ -9,17 +8,11 @@ import users from './api/v1/users'
 import csrfToken from './api/v1/csrfToken'
 import auth from './api/v1/auth'
 import './config'
-import {
-  CORS_ALLOWED_ORIGIN,
-  PRODUCTION_MODE,
-  SESSION_SECRET,
-  SERVER_PORT,
-} from './config'
+import { CORS_ALLOWED_ORIGIN, PRODUCTION_MODE, SESSION_SECRET } from './config'
 import { findById } from './models/User'
 
 export const setUp = () => {
   const app = express()
-  // const server = http.createServer(app)
 
   // POST時にJSONを受ける際に必要
   app.use(express.json())
