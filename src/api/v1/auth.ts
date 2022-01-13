@@ -14,8 +14,8 @@ const auth = Router()
 // ユーザ登録
 auth.post(
   '/signup',
-  // [checkEmailIsEmpty, checkEmailFormat],
-  // validator,
+  [checkEmailIsEmpty, checkEmailFormat],
+  validator,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const saltRounds = 10
@@ -50,8 +50,9 @@ auth.post('/signin', (req: any, res, next) => {
     req.session.userId = user.id
     req.session.username = user.name
     req.session.email = user.email
-    return res.json(user)
+    return next()
   })(req, res, next)
+  res.json({ message: 'success' })
 })
 
 // ログアウト
