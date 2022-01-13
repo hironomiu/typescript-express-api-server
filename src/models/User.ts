@@ -27,6 +27,7 @@ export type UserAuth = {
   updated_at: Date
 }
 
+// passwordを取得するSQLは末尾にAuthを付ける
 export const findByEmailAuth = async (email: string): Promise<UserAuth> => {
   const [rows, fields]: [RowDataPacket[number], any] = await promisePool.query(
     'select id,name,email,password,created_at,updated_at from users where email = ?',
