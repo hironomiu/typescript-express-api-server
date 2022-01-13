@@ -9,7 +9,7 @@ export type User = {
   updated_at: Date
 }
 
-export const getUser = async (id: number): Promise<User> => {
+export const findById = async (id: number): Promise<User> => {
   const [rows, fields]: [RowDataPacket[number], any] = await promisePool.query(
     'select id,name,email,created_at,updated_at from users where id = ?',
     [id]
@@ -27,7 +27,7 @@ export type UserAuth = {
   updated_at: Date
 }
 
-export const getUserAuth = async (email: string): Promise<UserAuth> => {
+export const findByEmailAuth = async (email: string): Promise<UserAuth> => {
   const [rows, fields]: [RowDataPacket[number], any] = await promisePool.query(
     'select id,name,email,password,created_at,updated_at from users where email = ?',
     [email]

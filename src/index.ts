@@ -15,7 +15,7 @@ import {
   SERVER_PORT,
   SESSION_SECRET,
 } from './config'
-import { getUser } from './models/User'
+import { findById } from './models/User'
 
 const app = express()
 const server = http.createServer(app)
@@ -72,7 +72,7 @@ authPassport(app)
 
 // 仮のリクエスト受付
 app.get('/', checkAuthentication, async (req: any, res) => {
-  const row: any = await getUser(req.session.userId)
+  const row: any = await findById(req.session.userId)
   res.json({
     message: `hello username is ${row.name}`,
     id: row.id,

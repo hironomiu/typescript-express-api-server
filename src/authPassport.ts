@@ -2,7 +2,7 @@ import { Express, NextFunction, Response } from 'express'
 import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
 import bcrypt from 'bcrypt'
-import { getUserAuth, UserAuth } from './models/User'
+import { findByEmailAuth, UserAuth } from './models/User'
 
 const authPassport = (app: Express) => {
   app.use(passport.initialize())
@@ -27,7 +27,7 @@ const authPassport = (app: Express) => {
         passwordField: 'password',
       },
       async (email, password, done) => {
-        const row: UserAuth = await getUserAuth(email)
+        const row: UserAuth = await findByEmailAuth(email)
         const isValid = await new Promise((resolve, reject) =>
           bcrypt.compare(password, row.password, (err, isValid) => {
             resolve(isValid)
