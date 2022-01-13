@@ -93,8 +93,5 @@ app.use(
   })()
 )
 
-// app.listen(SERVER_PORT, () => {
-//   console.log(`express listening on *:${SERVER_PORT}`)
-// })
-
+// app を export し server.tsから import しHTTPサーバを起動するのはテストで supertest を利用するため
 export { app }
