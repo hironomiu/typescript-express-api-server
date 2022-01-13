@@ -45,7 +45,6 @@ beforeEach(async () => {
   const data = response.headers['set-cookie'][0]
   const text = data.split(';')
   cookie = text[0]
-  console.log(cookie)
   csrfToken = obj.csrfToken
 })
 
@@ -62,8 +61,6 @@ describe('POST /api/v1/auth/signup', () => {
       .set('CSRF-Token', csrfToken)
       .set('Cookie', [cookie])
       .send(user)
-
-    console.log('response:', response.text)
 
     expect(response.status).toBe(200)
   })

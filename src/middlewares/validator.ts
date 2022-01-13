@@ -12,9 +12,7 @@ export const checkEmailFormat = check('email')
   .withMessage('emailのフォーマットではありません。')
 
 export const validator = (req: Request, res: Response, next: NextFunction) => {
-  console.log(req.body)
   const errors = validationResult(req)
-  console.log(errors)
   if (!errors.isEmpty()) {
     const messages = errors.array()
     return res.status(422).json({ isSuccess: false, message: messages[0].msg })

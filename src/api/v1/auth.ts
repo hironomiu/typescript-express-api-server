@@ -28,7 +28,7 @@ auth.post(
       const ret = await createUser({ ...req.body, hashPassword })
       res.json({ message: 'success', insertId: ret[0].insertId })
     } catch (err) {
-      console.log(err)
+      console.log('/signup error:', err)
       res.status(400).json({ message: 'fail' })
     }
   }
@@ -50,9 +50,9 @@ auth.post('/signin', (req: any, res, next) => {
     req.session.userId = user.id
     req.session.username = user.name
     req.session.email = user.email
+    res.json(user)
     return next()
   })(req, res, next)
-  res.json({ message: 'success' })
 })
 
 // ログアウト

@@ -1,4 +1,5 @@
 import express from 'express'
+// import http from 'http'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import csrf from 'csurf'
@@ -8,7 +9,12 @@ import users from './api/v1/users'
 import csrfToken from './api/v1/csrfToken'
 import auth from './api/v1/auth'
 import './config'
-import { CORS_ALLOWED_ORIGIN, PRODUCTION_MODE, SESSION_SECRET } from './config'
+import {
+  CORS_ALLOWED_ORIGIN,
+  PRODUCTION_MODE,
+  SESSION_SECRET,
+  SERVER_PORT,
+} from './config'
 import { findById } from './models/User'
 
 const app = express()
@@ -86,5 +92,9 @@ app.use(
     return router
   })()
 )
+
+// app.listen(SERVER_PORT, () => {
+//   console.log(`express listening on *:${SERVER_PORT}`)
+// })
 
 export { app }
