@@ -1,4 +1,5 @@
 import { check, validationResult } from 'express-validator'
+import { Request, Response, NextFunction } from 'express'
 
 // users validator
 export const checkEmailIsEmpty = check('email')
@@ -10,8 +11,7 @@ export const checkEmailFormat = check('email')
   .isEmail()
   .withMessage('emailのフォーマットではありません。')
 
-// TODO 型
-export const validator = (req: any, res: any, next: any) => {
+export const validator = (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     const messages = errors.array()
