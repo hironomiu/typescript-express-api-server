@@ -1,7 +1,6 @@
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
-import http from 'http'
 import csrf from 'csurf'
 import authPassport, { checkAuthentication } from './authPassport'
 import session from 'express-session'
@@ -9,16 +8,11 @@ import users from './api/v1/users'
 import csrfToken from './api/v1/csrfToken'
 import auth from './api/v1/auth'
 import './config'
-import {
-  CORS_ALLOWED_ORIGIN,
-  PRODUCTION_MODE,
-  SERVER_PORT,
-  SESSION_SECRET,
-} from './config'
+import { CORS_ALLOWED_ORIGIN, PRODUCTION_MODE, SESSION_SECRET } from './config'
 import { findById } from './models/User'
 
 const app = express()
-const server = http.createServer(app)
+// const server = http.createServer(app)
 
 // POST時にJSONを受ける際に必要
 app.use(express.json())
@@ -93,7 +87,4 @@ app.use(
   })()
 )
 
-// Server Listen
-server.listen(SERVER_PORT, () => {
-  console.log(`express listening on *:${SERVER_PORT}`)
-})
+export { app }

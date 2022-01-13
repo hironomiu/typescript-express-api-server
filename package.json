@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build": "tsc && cp .env ./build/.env",
-    "serve": "ts-node src/index.ts"
+    "serve": "ts-node src/server.ts"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
