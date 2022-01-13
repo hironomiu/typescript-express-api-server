@@ -8,6 +8,14 @@ TypeScript + Express + Passport + mysql2 での API サーバ
 npm run serve
 ```
 
+## build
+
+`cp .env ./build/.env`で`.env`をコピーしている点に注意
+
+```
+npm run build
+```
+
 ## Database & Table & Dummy Data
 
 `taro`のパスワード(平文)は`password`

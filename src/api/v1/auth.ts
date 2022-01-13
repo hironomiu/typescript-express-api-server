@@ -3,14 +3,18 @@ import passport from 'passport'
 import bcrypt from 'bcrypt'
 import { createUser } from '../../models/User'
 import { checkAuthentication } from '../../authPassport'
-import { validator, checkEmailIsEmpty } from '../../middlewares/validator'
+import {
+  validator,
+  checkEmailIsEmpty,
+  checkEmailFormat,
+} from '../../middlewares/validator'
 
 const auth = Router()
 
 // ユーザ登録
 auth.post(
   '/signup',
-  [checkEmailIsEmpty],
+  [checkEmailIsEmpty, checkEmailFormat],
   validator,
   async (req: Request, res: Response, next: NextFunction) => {
     try {

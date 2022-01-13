@@ -4,7 +4,11 @@ import { check, validationResult } from 'express-validator'
 export const checkEmailIsEmpty = check('email')
   .not()
   .isEmpty()
-  .withMessage('emailは必須項目です　')
+  .withMessage('emailは必須項目です。')
+
+export const checkEmailFormat = check('email')
+  .isEmail()
+  .withMessage('emailのフォーマットではありません。')
 
 // TODO 型
 export const validator = (req: any, res: any, next: any) => {
