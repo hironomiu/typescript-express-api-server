@@ -94,6 +94,6 @@ export const setUp = () => {
     })()
   )
 
-  // app を export し server.tsから import しHTTPサーバを起動するのはテストで supertest を利用するため
+  // setUp を export し return で app を返し server.tsから import しHTTPサーバを起動するのはテストで supertest を利用する際に都度 app を初期化するため
   return app
 }
