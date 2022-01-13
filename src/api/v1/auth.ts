@@ -1,28 +1,34 @@
-import { Router, Request } from 'express'
+import { Router, Request, Response, NextFunction } from 'express'
 import passport from 'passport'
 import bcrypt from 'bcrypt'
 import { createUser } from '../../models/User'
 import { checkAuthentication } from '../../authPassport'
+import { validator, checkEmailIsEmpty } from '../../middlewares/validator'
 
 const auth = Router()
 
 // ユーザ登録
-auth.post('/signup', async (req: Request, res, next) => {
-  try {
-    const saltRounds = 10
-    const hashPassword: string = await new Promise((resolve, reject) =>
-      bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
-        if (err) reject({ message: 'hashed error', err: err })
-        resolve(hash)
-      })
-    )
-    const ret = await createUser({ ...req.body, hashPassword })
-    res.json({ message: 'success', insertId: ret[0].insertId })
-  } catch (err) {
-    console.log(err)
-    res.status(400).json({ message: 'fail' })
+auth.post(
+  '/signup',
+  [checkEmailIsEmpty],
+  validator,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const saltRounds = 10
+      const hashPassword: string = await new Promise((resolve, reject) =>
+        bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
+          if (err) reject({ message: 'hashed error', err: err })
+          resolve(hash)
+        })
+      )
+      const ret = await createUser({ ...req.body, hashPassword })
+      res.json({ message: 'success', insertId: ret[0].insertId })
+    } catch (err) {
+      console.log(err)
+      res.status(400).json({ message: 'fail' })
+    }
   }
-})
+)
 
 // ログイン状態確認
 auth.get('/signin', checkAuthentication, (req, res) => {
