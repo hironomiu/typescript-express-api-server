@@ -26,10 +26,10 @@ auth.post(
         })
       )
       const ret = await createUser({ ...req.body, hashPassword })
-      res.json({ message: 'success', insertId: ret[0].insertId })
+      return res.json({ message: 'success', insertId: ret[0].insertId })
     } catch (err) {
       console.log('/signup error:', err)
-      res.status(400).json({ message: 'fail' })
+      return res.status(400).json({ message: 'fail' })
     }
   }
 )
@@ -40,20 +40,26 @@ auth.get('/signin', checkAuthentication, (req, res) => {
 })
 
 // ログイン
-auth.post('/signin', (req: any, res, next) => {
-  passport.authenticate('local', { session: true }, (err, user, info) => {
-    if (err) return next(err)
-    // infoではなく別途メッセージをレスポンス
-    if (!user)
-      return res.status(400).json({ isSuccess: false, message: '認証エラー' })
-    // TODO ログイン後の状態を持つのに妥当か確認
-    req.session.userId = user.id
-    req.session.username = user.name
-    req.session.email = user.email
-    res.json(user)
-    return next()
-  })(req, res, next)
-})
+auth.post(
+  '/signin',
+  [checkEmailIsEmpty, checkEmailFormat],
+  validator,
+  // TODO 型
+  (req: any, res: Response, next: NextFunction) => {
+    passport.authenticate('local', { session: true }, (err, user, info) => {
+      if (err) return next(err)
+      // infoではなく別途メッセージをレスポンス
+      if (!user)
+        return res.status(400).json({ isSuccess: false, message: '認証エラー' })
+      // TODO ログイン後の状態を持つのに妥当か確認
+      req.session.userId = user.id
+      req.session.username = user.name
+      req.session.email = user.email
+      res.json(user)
+      return next()
+    })(req, res, next)
+  }
+)
 
 // ログアウト
 auth.post('/signout', (req: any, res, next) => {

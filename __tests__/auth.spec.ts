@@ -67,6 +67,25 @@ describe('POST /api/v1/auth/signup', () => {
     console.log('signup:', response.text)
     expect(response.status).toBe(200)
   })
+
+  it('POST /signup validation Error', async () => {
+    resetUsers()
+
+    const user = {
+      username: 'test',
+      email: 'test',
+      password: 'password',
+    }
+    const response = await supertest(app)
+      .post('/api/v1/auth/signup')
+      .set('Accept', 'application/json')
+      .set('CSRF-Token', csrfToken)
+      .set('Cookie', [cookie])
+      .send(user)
+
+    console.log('signup:', response.text)
+    expect(response.status).toBe(200)
+  })
 })
 
 describe('POST /api/v1/auth/signin', () => {
@@ -83,5 +102,23 @@ describe('POST /api/v1/auth/signin', () => {
       .send(user)
     console.log('signin:' + response.text)
     expect(response.status).toBe(200)
+  })
+
+  it('POST signin Validation Error', async () => {
+    const user = {
+      email: '',
+      password: 'password',
+    }
+    const response = await supertest(app)
+      .post('/api/v1/auth/signin')
+      .set('Accept', 'application/json')
+      .set('CSRF-Token', csrfToken)
+      .set('Cookie', [cookie])
+      .send(user)
+    console.log('signin:' + response.text)
+    const obj = JSON.parse(response.text)
+    expect(response.status).toBe(422)
+    expect(obj.message).toBe('emailは必須項目です。')
+    expect(obj.isSuccess).toBe(false)
   })
 })
