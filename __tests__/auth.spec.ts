@@ -19,12 +19,12 @@ const resetUsers = () => {
   const connection = mysql.createConnection(databaseConfig)
 
   // TODO DDLでデータ消去するとテストがタイムアウトする
-  // connection.query('truncate table users')
+  connection.query('truncate table users')
 
   // TODO コネクションの生成？トランザクション開始？の宣言不要？
-  connection.connect()
+  // connection.connect()
 
-  connection.query('delete from users')
+  // connection.query('delete from users')
   connection.query('insert into users(name,email,password) values(?,?,?)', [
     '太郎',
     'taro@example.com',
@@ -47,9 +47,11 @@ let csrfToken = ''
 let cookie = ''
 let app = setUp()
 
-beforeEach(async () => {
+beforeAll(() => {
   resetUsers()
+})
 
+beforeEach(async () => {
   let app = setUp()
   const response = await supertest(app).get('/api/v1/csrf-token')
   const obj = JSON.parse(response.text)
@@ -73,7 +75,6 @@ describe('POST /api/v1/auth/signup', () => {
       .set('Cookie', [cookie])
       .send(user)
 
-    console.log('signup:', response.text)
     const obj = JSON.parse(response.text)
     expect(response.status).toBe(200)
     expect(obj.isSuccess).toBe(true)
@@ -134,5 +135,33 @@ describe('POST /api/v1/auth/signin', () => {
     expect(response.status).toBe(422)
     expect(obj.message).toBe('emailは必須項目です。')
     expect(obj.isSuccess).toBe(false)
+  })
+})
+
+describe('GET /api/v1/auth/signin', () => {
+  it('GET signin', async () => {
+    const user = {
+      email: 'taro@example.com',
+      password: 'password',
+    }
+    const signinPostResponse = await supertest(app)
+      .post('/api/v1/auth/signin')
+      .set('Accept', 'application/json')
+      .set('CSRF-Token', csrfToken)
+      .set('Cookie', [cookie])
+      .send(user)
+    const data = signinPostResponse.headers['set-cookie'][0]
+    const text = data.split(';')
+    const signIncookie = text[0]
+
+    const response = await supertest(app)
+      .get('/api/v1/auth/signin')
+      .set('Accept', 'application/json')
+      .set('CSRF-Token', csrfToken)
+      .set('Cookie', [cookie, signIncookie])
+    const obj = JSON.parse(response.text)
+    expect(response.status).toBe(200)
+    expect(obj.isSuccess).toBe(true)
+    expect(obj.message).toBe('success')
   })
 })
