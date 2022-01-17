@@ -5,17 +5,26 @@ import dotenv from 'dotenv'
 
 jest.setTimeout(20 * 1000)
 
-const resetUsers = async () => {
-  dotenv.config()
-  const connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-    port: 3306,
-  })
-  connection.connect()
-  connection.query('truncate table users')
+dotenv.config()
+
+const databaseConfig = {
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+  port: 3306,
+}
+
+const resetUsers = () => {
+  const connection = mysql.createConnection(databaseConfig)
+
+  // TODO DDLでデータ消去するとテストがタイムアウトする
+  // connection.query('truncate table users')
+
+  // トランザクション開始の宣言不要？
+  // connection.connect()
+
+  connection.query('delete from users')
   connection.query('insert into users(name,email,password) values(?,?,?)', [
     '太郎',
     'taro@example.com',
@@ -39,6 +48,8 @@ let cookie = ''
 let app = setUp()
 
 beforeEach(async () => {
+  resetUsers()
+
   let app = setUp()
   const response = await supertest(app).get('/api/v1/csrf-token')
   const obj = JSON.parse(response.text)
@@ -50,8 +61,6 @@ beforeEach(async () => {
 
 describe('POST /api/v1/auth/signup', () => {
   it('POST /signup', async () => {
-    resetUsers()
-
     const user = {
       username: 'test',
       email: 'test@example.com',
@@ -69,8 +78,6 @@ describe('POST /api/v1/auth/signup', () => {
   })
 
   it('POST /signup validation Error', async () => {
-    resetUsers()
-
     const user = {
       username: 'test',
       email: 'test',
@@ -84,7 +91,7 @@ describe('POST /api/v1/auth/signup', () => {
       .send(user)
 
     console.log('signup:', response.text)
-    expect(response.status).toBe(200)
+    expect(response.status).toBe(422)
   })
 })
 
