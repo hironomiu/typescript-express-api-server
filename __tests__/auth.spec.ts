@@ -21,8 +21,8 @@ const resetUsers = () => {
   // TODO DDLでデータ消去するとテストがタイムアウトする
   // connection.query('truncate table users')
 
-  // トランザクション開始の宣言不要？
-  // connection.connect()
+  // TODO コネクションの生成？トランザクション開始？の宣言不要？
+  connection.connect()
 
   connection.query('delete from users')
   connection.query('insert into users(name,email,password) values(?,?,?)', [
@@ -74,7 +74,10 @@ describe('POST /api/v1/auth/signup', () => {
       .send(user)
 
     console.log('signup:', response.text)
+    const obj = JSON.parse(response.text)
     expect(response.status).toBe(200)
+    expect(obj.isSuccess).toBe(true)
+    expect(obj.message).toBe('success')
   })
 
   it('POST /signup validation Error', async () => {
@@ -90,8 +93,10 @@ describe('POST /api/v1/auth/signup', () => {
       .set('Cookie', [cookie])
       .send(user)
 
-    console.log('signup:', response.text)
+    const obj = JSON.parse(response.text)
     expect(response.status).toBe(422)
+    expect(obj.isSuccess).toBe(false)
+    expect(obj.message).toBe('emailのフォーマットではありません。')
   })
 })
 
@@ -107,8 +112,11 @@ describe('POST /api/v1/auth/signin', () => {
       .set('CSRF-Token', csrfToken)
       .set('Cookie', [cookie])
       .send(user)
-    console.log('signin:' + response.text)
+    const obj = JSON.parse(response.text)
     expect(response.status).toBe(200)
+    expect(obj.isSuccess).toBe(true)
+    expect(obj.name).toBe('太郎')
+    expect(obj.email).toBe('taro@example.com')
   })
 
   it('POST signin Validation Error', async () => {
@@ -122,7 +130,6 @@ describe('POST /api/v1/auth/signin', () => {
       .set('CSRF-Token', csrfToken)
       .set('Cookie', [cookie])
       .send(user)
-    console.log('signin:' + response.text)
     const obj = JSON.parse(response.text)
     expect(response.status).toBe(422)
     expect(obj.message).toBe('emailは必須項目です。')

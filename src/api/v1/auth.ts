@@ -26,17 +26,21 @@ auth.post(
         })
       )
       const ret = await createUser({ ...req.body, hashPassword })
-      return res.json({ message: 'success', insertId: ret[0].insertId })
+      return res.json({
+        isSuccess: true,
+        message: 'success',
+        insertId: ret[0].insertId,
+      })
     } catch (err) {
       console.log('/signup error:', err)
-      return res.status(400).json({ message: 'fail' })
+      return res.status(400).json({ isSuccess: false, message: 'fail' })
     }
   }
 )
 
 // ログイン状態確認
 auth.get('/signin', checkAuthentication, (req, res) => {
-  res.json({ message: 'success' })
+  res.json({ isSuccess: true, message: 'success' })
 })
 
 // ログイン
