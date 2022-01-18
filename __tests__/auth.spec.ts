@@ -2,6 +2,7 @@ import supertest from 'supertest'
 import mysql from 'mysql2'
 import { setUp } from '../src/app'
 import dotenv from 'dotenv'
+import { response } from 'express'
 
 jest.setTimeout(20 * 1000)
 
@@ -18,7 +19,7 @@ const databaseConfig = {
 const resetUsers = () => {
   const connection = mysql.createConnection(databaseConfig)
 
-  // TODO DDLでデータ消去するとテストがタイムアウトする
+  // TODO beforeEachだとDDLでデータ消去するとテストがタイムアウトする
   connection.query('truncate table users')
 
   // TODO コネクションの生成？トランザクション開始？の宣言不要？
@@ -47,10 +48,6 @@ let csrfToken = ''
 let cookie = ''
 let app = setUp()
 
-beforeAll(() => {
-  resetUsers()
-})
-
 beforeEach(async () => {
   let app = setUp()
   const response = await supertest(app).get('/api/v1/csrf-token')
@@ -62,6 +59,15 @@ beforeEach(async () => {
 })
 
 describe('POST /api/v1/auth/signup', () => {
+  // beforeEach(() => {
+  beforeAll(() => {
+    resetUsers()
+  })
+
+  // afterAll(() => {
+  //   resetUsers()
+  // })
+
   it('POST /signup', async () => {
     const user = {
       username: 'test',
