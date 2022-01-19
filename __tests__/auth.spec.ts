@@ -2,7 +2,6 @@ import supertest from 'supertest'
 import mysql from 'mysql2'
 import { setUp } from '../src/app'
 import dotenv from 'dotenv'
-import { response } from 'express'
 
 jest.setTimeout(20 * 1000)
 
@@ -56,13 +55,17 @@ beforeEach(async () => {
   const text = data.split(';')
   cookie = text[0]
   csrfToken = obj.csrfToken
+
+  resetUsers()
+
+  console.log('beforeEach called')
 })
 
 describe('POST /api/v1/auth/signup', () => {
   // beforeEach(() => {
-  beforeAll(() => {
-    resetUsers()
-  })
+  // beforeAll(() => {
+  //   resetUsers()
+  // })
 
   // afterAll(() => {
   //   resetUsers()
