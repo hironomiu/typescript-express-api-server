@@ -27,24 +27,31 @@ const authPassport = (app: Express) => {
         passwordField: 'password',
       },
       async (email, password, done) => {
-        const row: UserAuth = await findByEmailAuth(email)
-        const isValid = await new Promise((resolve, reject) =>
-          bcrypt.compare(password, row.password, (err, isValid) => {
-            resolve(isValid)
-          })
-        )
-        if (!row) return done(null, { isSuccess: false, message: '認証エラー' })
-        if (email !== row.email) {
+        try {
+          const row: UserAuth = await findByEmailAuth(email)
+          const isValid = await new Promise((resolve, reject) =>
+            bcrypt.compare(password, row.password, (err, isValid) => {
+              resolve(isValid)
+            })
+          )
+          if (!row)
+            return done(null, { isSuccess: false, message: '認証エラー' })
+          if (email !== row.email) {
+            return done(null, { isSuccess: false, message: '認証エラー' })
+          } else if (!isValid) {
+            return done(null, { isSuccess: false, message: '認証エラー' })
+          } else {
+            return done(null, {
+              isSuccess: true,
+              id: row.id,
+              name: row.name,
+              email: row.email,
+            })
+          }
+          // DBエラーをキャッチ
+        } catch (err) {
+          console.log(err)
           return done(null, { isSuccess: false, message: '認証エラー' })
-        } else if (!isValid) {
-          return done(null, { isSuccess: false, message: '認証エラー' })
-        } else {
-          return done(null, {
-            isSuccess: true,
-            id: row.id,
-            name: row.name,
-            email: row.email,
-          })
         }
       }
     )
