@@ -1,6 +1,6 @@
 # typescript-express-passport
 
-TypeScript + Express + Passport + mysql2 での API サーバ
+TypeScript + Express + Passport + mysql2 + bcrypt + express-validator + express-session + csurf での API サーバ
 
 ## serve
 
@@ -26,7 +26,7 @@ npm test
 
 ## Database & Table & Dummy Data
 
-`taro`のパスワード(平文)は`password`
+`taro`のパスワード(平文)は`password`(bcrypt でハッシュ化済)
 
 ```
 create database express_api;
