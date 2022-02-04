@@ -31,6 +31,8 @@ npm test
 ```
 create database express_api;
 
+use express_api;
+
 drop table users;
 
 CREATE TABLE `users` (
