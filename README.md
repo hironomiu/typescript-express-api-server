@@ -2,6 +2,8 @@
 
 TypeScript + Express + Passport + mysql2 + bcrypt + express-validator + express-session + csurf での API サーバ
 
+クライアントは[typescript-react-recoil-api-client](https://github.com/hironomiu/typescript-react-recoil-api-client)
+
 ## serve
 
 ```
