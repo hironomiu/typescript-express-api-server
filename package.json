@@ -1,6 +1,7 @@
 {
   "scripts": {
     "build": "tsc && cp .env ./build/.env",
+    "actionsBuild": "tsc",
     "serve": "ts-node src/server.ts",
     "test": "jest --forceExit --detectOpenHandles --coverage --verbose"
   },
