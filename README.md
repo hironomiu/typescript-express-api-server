@@ -59,6 +59,7 @@ insert into users(name,email,password) values('太郎','taro@example.com','$2b$1
 ```
 SERVER_PORT=5555
 CORS_ALLOWED_ORIGIN='http://localhost:3001 http://localhost:4000'
+SESSION_SECRET=yoursecretkeyword
 PRODUCTION_MODE=dev
 DB_HOST=127.0.0.1
 DB_USER=root
