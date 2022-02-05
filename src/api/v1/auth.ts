@@ -50,12 +50,16 @@ auth.post(
   validator,
   // TODO 型
   (req: any, res: Response, next: NextFunction) => {
+    console.log('signin')
     passport.authenticate('local', { session: true }, (err, user, info) => {
       if (err) return next(err)
       // infoではなく別途メッセージをレスポンス
       if (!user)
         return res.status(400).json({ isSuccess: false, message: '認証エラー' })
       // TODO ログイン後の状態を持つのに妥当か確認
+      req.session.regenerate((err: any) => {
+        if (err) console.log('err:', err)
+      })
       req.session.userId = user.id
       req.session.username = user.name
       req.session.email = user.email
@@ -67,8 +71,8 @@ auth.post(
 
 // ログアウト
 auth.post('/signout', (req: any, res, next) => {
-  req.session.user = ''
+  req.session.destroy()
   res.clearCookie('session')
-  res.json({ isSuccess: true, message: 'signouted' })
+  return res.json({ isSuccess: true, message: 'signouted' })
 })
 export default auth
