@@ -73,7 +73,7 @@ export const checkAuthentication = (
   if (req.session.userId) {
     next()
   } else {
-    res.status(400).json({ isLogin: false })
+    res.status(400).json({ isSuccess: false, message: 'false' })
   }
 }
 export default authPassport
