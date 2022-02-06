@@ -43,23 +43,33 @@ auth.get('/signin', checkAuthentication, (req, res) => {
   res.json({ isSuccess: true, message: 'success' })
 })
 
+// req.session.xxx用の型定義
+declare module 'express-session' {
+  interface Session {
+    userId: string
+    username: string
+    email: string
+  }
+}
+
 // ログイン
 auth.post(
   '/signin',
   [checkEmailIsEmpty, checkEmailFormat],
   validator,
-  // TODO 型
-  (req: any, res: Response, next: NextFunction) => {
+  (req: Request, res: Response, next: NextFunction) => {
     console.log('signin')
     passport.authenticate('local', { session: true }, (err, user, info) => {
       if (err) return next(err)
       // infoではなく別途メッセージをレスポンス
       if (!user)
         return res.status(400).json({ isSuccess: false, message: '認証エラー' })
-      // TODO ログイン後の状態を持つのに妥当か確認
-      req.session.regenerate((err: any) => {
+      // ログイン後のセッションの再作成
+      // TODO コールバック内の正常系の処理
+      req.session.regenerate((err) => {
         if (err) console.log('err:', err)
       })
+      // TODO ログイン後の状態を持つのに妥当か確認
       req.session.userId = user.id
       req.session.username = user.name
       req.session.email = user.email
@@ -71,6 +81,7 @@ auth.post(
 
 // ログアウト
 auth.post('/signout', (req: any, res, next) => {
+  // セッションの破棄
   req.session.destroy()
   res.clearCookie('session')
   return res.json({ isSuccess: true, message: 'signouted' })
