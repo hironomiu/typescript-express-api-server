@@ -55,6 +55,17 @@ insert into users(name,email,password) values('太郎','taro@example.com','$2b$1
 ## .env
 
 `./.env`を環境に合わせて設定(以下例)
+|変数名|設定値|
+|:-|:-|
+|SERVER_PORT|アプリが Listen する PORT|
+|CORS_ALLOWED_ORIGIN|CORS を許可する URL、スペース区切りで複数可|
+|SESSION_SECRET|セッション用のシークレット文字列|
+|PRODUCTION_MODE|dev or prod|
+|DB_HOST|接続する DB のホスト名|
+|DB_USER|接続する DB のユーザ名|
+|DB_PASSWORD|接続する DB のパスワード|
+|DB_DATABASE|接続する DB の DB 名|
+|DB_PORT|接続する DB の PORT|
 
 ```
 SERVER_PORT=5555
