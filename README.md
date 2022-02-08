@@ -1,5 +1,7 @@
 # typescript-express-passport
 
+[![Node.js CI](https://github.com/hironomiu/typescript-express-api-server/actions/workflows/node.js.yml/badge.svg)](https://github.com/hironomiu/typescript-express-api-server/actions/workflows/node.js.yml)
+
 TypeScript + Express + Passport + mysql2 + bcrypt + express-validator + express-session + csurf での API サーバ
 
 クライアントは[typescript-react-recoil-api-client](https://github.com/hironomiu/typescript-react-recoil-api-client)
