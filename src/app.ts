@@ -7,7 +7,6 @@ import * as expressSession from 'express-session'
 import session from 'express-session'
 import expressMySqlSession from 'express-mysql-session'
 import { DB_DATABASE, DB_HOST, DB_PASSWORD, DB_PORT, DB_USER } from './config'
-
 import users from './api/v1/users'
 import csrfToken from './api/v1/csrfToken'
 import auth from './api/v1/auth'
