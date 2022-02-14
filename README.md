@@ -2,7 +2,7 @@
 
 [![Node.js CI](https://github.com/hironomiu/typescript-express-api-server/actions/workflows/node.js.yml/badge.svg)](https://github.com/hironomiu/typescript-express-api-server/actions/workflows/node.js.yml)
 
-TypeScript + Express + Passport + mysql2 + bcrypt + express-validator + express-session + csurf での API サーバ
+TypeScript + Express + Passport + mysql2 + bcrypt + express-validator + express-session + express-mysql-session + csurf での API サーバ
 
 クライアントは[typescript-react-recoil-api-client](https://github.com/hironomiu/typescript-react-recoil-api-client)
 
@@ -134,6 +134,8 @@ npx tsc --init
 ```
 
 ### express-mysql-session
+
+session はローカルのインメモリで管理せず MySQL で管理させる
 
 ```
 npm install express-mysql-session
