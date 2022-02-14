@@ -65,6 +65,7 @@ export const setUp = () => {
       secret: SESSION_SECRET,
       resave: false,
       saveUninitialized: false,
+      // sessionの格納先をMySQLに設定
       store: sessionStore,
       // localhostではなくhttpsが使える環境の場合はPRODUCTION_MODEを変更しtrueで運用する
       cookie: { secure: isProduction },
