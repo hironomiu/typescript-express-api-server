@@ -3,7 +3,11 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import csrf from 'csurf'
 import authPassport, { checkAuthentication } from './authPassport'
+import * as expressSession from 'express-session'
 import session from 'express-session'
+import expressMySqlSession from 'express-mysql-session'
+import { DB_DATABASE, DB_HOST, DB_PASSWORD, DB_PORT, DB_USER } from './config'
+
 import users from './api/v1/users'
 import csrfToken from './api/v1/csrfToken'
 import auth from './api/v1/auth'
@@ -13,6 +17,16 @@ import { findById } from './models/User'
 
 export const setUp = () => {
   const app = express()
+
+  const options = {
+    host: DB_HOST,
+    port: parseInt(DB_PORT),
+    user: DB_USER,
+    password: DB_PASSWORD,
+    database: DB_DATABASE,
+  }
+  const MySQLStore = expressMySqlSession(expressSession)
+  const sessionStore = new MySQLStore(options)
 
   // POST時にJSONを受ける際に必要
   app.use(express.json())
@@ -45,6 +59,7 @@ export const setUp = () => {
       secret: SESSION_SECRET,
       resave: false,
       saveUninitialized: false,
+      store: sessionStore,
       // localhostではなくhttpsが使える環境の場合はPRODUCTION_MODEを変更しtrueで運用する
       cookie: { secure: isProduction },
     })

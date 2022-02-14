@@ -132,3 +132,10 @@ npm install -D jest ts-jest @types/jest supertest @types/supertest
 ```
 npx tsc --init
 ```
+
+### express-mysql-session
+
+```
+npm install express-mysql-session
+npm install -D @types/express-mysql-session
+```
