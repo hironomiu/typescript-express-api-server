@@ -135,7 +135,15 @@ npx tsc --init
 
 ### express-mysql-session
 
-session はローカルのインメモリで管理せず MySQL で管理させる
+session はローカルのインメモリで管理せず MySQL で管理させる。設定値は`.env`の以下にて設定
+
+| 変数名      | 設定値                   |
+| :---------- | :----------------------- |
+| DB_HOST     | 接続する DB のホスト名   |
+| DB_USER     | 接続する DB のユーザ名   |
+| DB_PASSWORD | 接続する DB のパスワード |
+| DB_DATABASE | 接続する DB の DB 名     |
+| DB_PORT     | 接続する DB の PORT      |
 
 ```
 npm install express-mysql-session
