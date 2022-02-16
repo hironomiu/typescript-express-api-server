@@ -74,6 +74,7 @@ auth.post(
       req.session.username = user.name
       req.session.email = user.email
       res.json(user)
+      console.log(req.session)
       return next()
     })(req, res, next)
   }
