@@ -1,8 +1,8 @@
-import { Router } from 'express'
+import { Router, Request } from 'express'
 
 const users = Router()
 
-users.route('/').get(async (req: any, res) => {
+users.route('/').get(async (req: Request, res) => {
   console.log(req.session.userId)
   res.json({ message: 'api/v1/users' })
 })

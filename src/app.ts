@@ -17,6 +17,7 @@ import {
   SESSION_SECRET,
 } from './config'
 import users from './api/v1/users'
+import notifications from './api/v1/notifications'
 import csrfToken from './api/v1/csrfToken'
 import auth from './api/v1/auth'
 import { findById } from './models/User'
@@ -103,6 +104,7 @@ export const setUp = () => {
     (() => {
       const router = express.Router()
       router.use('/users', users)
+      router.use('/notifications', notifications)
       router.use('/csrf-token', csrfToken)
       router.use('/auth', auth)
       return router
