@@ -3,6 +3,7 @@ import { findAll } from '../../models/Notifications'
 
 const notifications = Router()
 
+// TODO 型
 notifications.route('/').get(async (req: any, res) => {
   const rows = await findAll(req.session.userId)
   console.log(req.session)
