@@ -9,7 +9,15 @@ export type Notifications = {
 
 export const findAll = async (id: number) => {
   const [rows, fields] = await promisePool.query(
-    'select a.title,a.notification,b.is_confirmed from user_notifications b inner join notifications a on a.id = b.notification_id where b.user_id = ?',
+    'select b.id,a.title,a.notification,b.is_confirmed from user_notifications b inner join notifications a on a.id = b.notification_id where b.user_id = ?',
+    [id]
+  )
+  return rows
+}
+
+export const updateIsConfirmedById = async (id: number) => {
+  const [rows, fields] = await promisePool.query(
+    'update user_notifications set is_confirmed = 1 where id = ?',
     [id]
   )
   return rows
