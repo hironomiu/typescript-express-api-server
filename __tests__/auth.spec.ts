@@ -20,26 +20,41 @@ const resetUsers = () => {
 
   // TODO beforeEachだとDDLでデータ消去するとテストがタイムアウトする
   connection.query('truncate table users')
+  // connection.query('truncate table sessions')
 
   // TODO コネクションの生成？トランザクション開始？の宣言不要？
   // connection.connect()
 
   // connection.query('delete from users')
-  connection.query('insert into users(name,email,password) values(?,?,?)', [
-    '太郎',
-    'taro@example.com',
-    '$2b$10$wFi8RBzI3EpHt6XxqxLdLO41437B8RniV6ytM6NAACNPdFbjPj3je',
-  ])
-  connection.query('insert into users(name,email,password) values(?,?,?)', [
-    '花子',
-    'hanako@example.com',
-    '$2b$10$OaDQnNzHPyS4RKihI3loxuCQPogfuBz5/WYDEtvBpV0B2FTR4l0MW',
-  ])
-  connection.query('insert into users(name,email,password) values(?,?,?)', [
-    'Mike',
-    'mike@example.com',
-    '$2b$10$migKeKnsy06FXJYlbWlW5eVDplNyvQDDGWmaqSHce88ceT1z3QGwm',
-  ])
+  // connection.query('insert into users(name,email,password) values(?,?,?)', [
+  //   '太郎',
+  //   'taro@example.com',
+  //   '$2b$10$wFi8RBzI3EpHt6XxqxLdLO41437B8RniV6ytM6NAACNPdFbjPj3je',
+  // ])
+  connection.query(
+    'insert into users(name,email,password) values(?,?,?),(?,?,?),(?,?,?)',
+    [
+      '太郎',
+      'taro@example.com',
+      '$2b$10$wFi8RBzI3EpHt6XxqxLdLO41437B8RniV6ytM6NAACNPdFbjPj3je',
+      '花子',
+      'hanako@example.com',
+      '$2b$10$OaDQnNzHPyS4RKihI3loxuCQPogfuBz5/WYDEtvBpV0B2FTR4l0MW',
+      'Mike',
+      'mike@example.com',
+      '$2b$10$migKeKnsy06FXJYlbWlW5eVDplNyvQDDGWmaqSHce88ceT1z3QGwm',
+    ]
+  )
+  // connection.query('insert into users(name,email,password) values(?,?,?)', [
+  //   '花子',
+  //   'hanako@example.com',
+  //   '$2b$10$OaDQnNzHPyS4RKihI3loxuCQPogfuBz5/WYDEtvBpV0B2FTR4l0MW',
+  // ])
+  // connection.query('insert into users(name,email,password) values(?,?,?)', [
+  //   'Mike',
+  //   'mike@example.com',
+  //   '$2b$10$migKeKnsy06FXJYlbWlW5eVDplNyvQDDGWmaqSHce88ceT1z3QGwm',
+  // ])
   connection.end()
 }
 
@@ -59,6 +74,12 @@ beforeEach(async () => {
   resetUsers()
 
   console.log('beforeEach called')
+})
+
+afterEach(async () => {
+  const connection = mysql.createConnection(databaseConfig)
+  connection.query('truncate table sessions')
+  console.log('afterEach called')
 })
 
 describe('POST /api/v1/auth/signup', () => {
@@ -124,7 +145,8 @@ describe('POST /api/v1/auth/signin', () => {
       .send(user)
     const obj = JSON.parse(response.text)
     expect(response.status).toBe(200)
-    expect(obj.isSuccess).toBe(true)
+    // expect(obj.isSuccess).toBe(true)
+    console.log(obj)
     expect(obj.name).toBe('太郎')
     expect(obj.email).toBe('taro@example.com')
   })
