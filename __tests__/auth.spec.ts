@@ -15,16 +15,22 @@ const databaseConfig = {
   port: 3306,
 }
 
-const resetUsers = () => {
+let csrfToken = ''
+let cookie = ''
+let app = setUp()
+
+beforeEach(async () => {
+  let app = setUp()
+
+  const response = await supertest(app).get('/api/v1/csrf-token')
+  const obj = JSON.parse(response.text)
+  const data = response.headers['set-cookie'][0]
+  const text = data.split(';')
+  cookie = text[0]
+  csrfToken = obj.csrfToken
+
   const connection = mysql.createConnection(databaseConfig)
-
-  // TODO beforeEachだとDDLでデータ消去するとテストがタイムアウトする
   connection.query('truncate table users')
-  // connection.query('truncate table sessions')
-
-  // TODO コネクションの生成？トランザクション開始？の宣言不要？
-  // connection.connect()
-
   connection.query(
     'insert into users(name,email,password) values(?,?,?),(?,?,?),(?,?,?)',
     [
@@ -39,32 +45,16 @@ const resetUsers = () => {
       '$2b$10$migKeKnsy06FXJYlbWlW5eVDplNyvQDDGWmaqSHce88ceT1z3QGwm',
     ]
   )
-
   connection.end()
-}
-
-let csrfToken = ''
-let cookie = ''
-let app = setUp()
-
-beforeEach(async () => {
-  let app = setUp()
-  const response = await supertest(app).get('/api/v1/csrf-token')
-  const obj = JSON.parse(response.text)
-  const data = response.headers['set-cookie'][0]
-  const text = data.split(';')
-  cookie = text[0]
-  csrfToken = obj.csrfToken
-
-  resetUsers()
 
   console.log('beforeEach called')
 })
 
-afterEach(async () => {
+afterEach(() => {
   const connection = mysql.createConnection(databaseConfig)
   connection.query('truncate table sessions')
   connection.end()
+
   console.log('afterEach called')
 })
 
