@@ -25,12 +25,6 @@ const resetUsers = () => {
   // TODO コネクションの生成？トランザクション開始？の宣言不要？
   // connection.connect()
 
-  // connection.query('delete from users')
-  // connection.query('insert into users(name,email,password) values(?,?,?)', [
-  //   '太郎',
-  //   'taro@example.com',
-  //   '$2b$10$wFi8RBzI3EpHt6XxqxLdLO41437B8RniV6ytM6NAACNPdFbjPj3je',
-  // ])
   connection.query(
     'insert into users(name,email,password) values(?,?,?),(?,?,?),(?,?,?)',
     [
@@ -45,16 +39,7 @@ const resetUsers = () => {
       '$2b$10$migKeKnsy06FXJYlbWlW5eVDplNyvQDDGWmaqSHce88ceT1z3QGwm',
     ]
   )
-  // connection.query('insert into users(name,email,password) values(?,?,?)', [
-  //   '花子',
-  //   'hanako@example.com',
-  //   '$2b$10$OaDQnNzHPyS4RKihI3loxuCQPogfuBz5/WYDEtvBpV0B2FTR4l0MW',
-  // ])
-  // connection.query('insert into users(name,email,password) values(?,?,?)', [
-  //   'Mike',
-  //   'mike@example.com',
-  //   '$2b$10$migKeKnsy06FXJYlbWlW5eVDplNyvQDDGWmaqSHce88ceT1z3QGwm',
-  // ])
+
   connection.end()
 }
 
