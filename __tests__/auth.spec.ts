@@ -64,19 +64,11 @@ beforeEach(async () => {
 afterEach(async () => {
   const connection = mysql.createConnection(databaseConfig)
   connection.query('truncate table sessions')
+  connection.end()
   console.log('afterEach called')
 })
 
 describe('POST /api/v1/auth/signup', () => {
-  // beforeEach(() => {
-  // beforeAll(() => {
-  //   resetUsers()
-  // })
-
-  // afterAll(() => {
-  //   resetUsers()
-  // })
-
   it('POST /signup', async () => {
     const user = {
       username: 'test',
@@ -130,7 +122,7 @@ describe('POST /api/v1/auth/signin', () => {
       .send(user)
     const obj = JSON.parse(response.text)
     expect(response.status).toBe(200)
-    // expect(obj.isSuccess).toBe(true)
+    expect(obj.isSuccess).toBe(true)
     console.log(obj)
     expect(obj.name).toBe('太郎')
     expect(obj.email).toBe('taro@example.com')
