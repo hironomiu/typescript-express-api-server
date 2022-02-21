@@ -20,8 +20,6 @@ let cookie = ''
 let app = setUp()
 
 beforeEach(async () => {
-  let app = setUp()
-
   const response = await supertest(app).get('/api/v1/csrf-token')
   const obj = JSON.parse(response.text)
   const data = response.headers['set-cookie'][0]
@@ -47,15 +45,16 @@ beforeEach(async () => {
   )
   connection.end()
 
-  console.log('beforeEach called')
+  // console.log('beforeEach called')
 })
 
-afterEach(() => {
+afterEach((done) => {
   const connection = mysql.createConnection(databaseConfig)
   connection.query('truncate table sessions')
   connection.end()
 
-  console.log('afterEach called')
+  setTimeout(done, 1000)
+  // console.log('afterEach called')
 })
 
 describe('POST /api/v1/auth/signup', () => {
@@ -113,7 +112,6 @@ describe('POST /api/v1/auth/signin', () => {
     const obj = JSON.parse(response.text)
     expect(response.status).toBe(200)
     expect(obj.isSuccess).toBe(true)
-    console.log(obj)
     expect(obj.name).toBe('太郎')
     expect(obj.email).toBe('taro@example.com')
   })

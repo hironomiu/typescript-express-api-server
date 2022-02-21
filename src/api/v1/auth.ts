@@ -58,7 +58,7 @@ auth.post(
   [checkEmailIsEmpty, checkEmailFormat],
   validator,
   (req: Request, res: Response, next: NextFunction) => {
-    console.log('signin')
+    // console.log('signin')
     passport.authenticate('local', { session: true }, (err, user, info) => {
       if (err) return next(err)
       // infoではなく別途メッセージをレスポンス
@@ -74,7 +74,7 @@ auth.post(
       req.session.username = user.name
       req.session.email = user.email
       res.json(user)
-      console.log(req.session)
+      // console.log(req.session)
       return next()
     })(req, res, next)
   }
