@@ -17,6 +17,7 @@ auth.post(
   [checkEmailIsEmpty, checkEmailFormat],
   validator,
   async (req: Request, res: Response, next: NextFunction) => {
+    console.log('/signup')
     try {
       const saltRounds = 10
       const hashPassword: string = await new Promise((resolve, reject) =>
@@ -25,7 +26,14 @@ auth.post(
           resolve(hash)
         })
       )
-      const ret = await createUser({ ...req.body, hashPassword })
+      console.log(req.body)
+      // TODO nickname対応
+      // const ret = await createUser({ ...req.body, hashPassword })
+      const ret = await createUser({
+        username: req.body.nickname,
+        email: req.body.email,
+        hashPassword,
+      })
       return res.json({
         isSuccess: true,
         message: 'success',
@@ -33,7 +41,9 @@ auth.post(
       })
     } catch (err) {
       console.log('/signup error:', err)
-      return res.status(400).json({ isSuccess: false, message: 'fail' })
+      return res
+        .status(400)
+        .json({ isSuccess: false, message: 'ユーザ登録エラー' })
     }
   }
 )
