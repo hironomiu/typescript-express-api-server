@@ -60,7 +60,7 @@ afterEach((done) => {
 describe('POST /api/v1/auth/signup', () => {
   it('POST /signup', async () => {
     const user = {
-      username: 'test',
+      nickname: 'test',
       email: 'test@example.com',
       password: 'password',
     }
