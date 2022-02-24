@@ -30,29 +30,13 @@ npm test
 
 ## Database & Table & Dummy Data
 
-`taro`のパスワード(平文)は`password`(bcrypt でハッシュ化済)
+[create_database](./sql/create_database.sql)
 
-```
-create database express_api;
+[crate_table](./sql/create_table.sql)
 
-use express_api;
+各ユーザのパスワード(平文)は`password`(bcrypt でハッシュ化済)
 
-drop table users;
-
-CREATE TABLE `users` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
-);
-
-insert into users(name,email,password) values('太郎','taro@example.com','$2b$10$wFi8RBzI3EpHt6XxqxLdLO41437B8RniV6ytM6NAACNPdFbjPj3je'),('花子','hanako@example.com','$2b$10$OaDQnNzHPyS4RKihI3loxuCQPogfuBz5/WYDEtvBpV0B2FTR4l0MW'),('Mike','mike@example.com','$2b$10$migKeKnsy06FXJYlbWlW5eVDplNyvQDDGWmaqSHce88ceT1z3QGwm');
-
-```
+[insert_data](./sql/insert_data.sql)
 
 ## .env
 

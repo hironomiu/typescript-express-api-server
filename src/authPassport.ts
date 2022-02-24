@@ -44,7 +44,7 @@ const authPassport = (app: Express) => {
             return done(null, {
               isSuccess: true,
               id: row.id,
-              name: row.name,
+              nickname: row.nickname,
               email: row.email,
             })
           }

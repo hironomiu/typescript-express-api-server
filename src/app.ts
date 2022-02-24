@@ -91,9 +91,9 @@ export const setUp = () => {
   app.get('/', checkAuthentication, async (req: any, res) => {
     const row: any = await findById(req.session.userId)
     res.json({
-      message: `hello username is ${row.name}`,
+      message: `hello nickname is ${row.nickname}`,
       id: row.id,
-      name: row.name,
+      nickname: row.nickname,
       email: row.email,
     })
   })

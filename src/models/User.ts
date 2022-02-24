@@ -3,7 +3,7 @@ import promisePool from '../database'
 
 export type User = {
   id: number
-  name: string
+  nickname: string
   email: string
   created_at: Date
   updated_at: Date
@@ -11,7 +11,7 @@ export type User = {
 
 export const findById = async (id: number): Promise<User> => {
   const [rows, fields]: [RowDataPacket[number], any] = await promisePool.query(
-    'select id,name,email,created_at,updated_at from users where id = ?',
+    'select id,nickname,email,created_at,updated_at from users where id = ?',
     [id]
   )
 
@@ -20,7 +20,7 @@ export const findById = async (id: number): Promise<User> => {
 
 export type UserAuth = {
   id: number
-  name: string
+  nickname: string
   email: string
   password: string
   created_at: Date
@@ -30,7 +30,7 @@ export type UserAuth = {
 // passwordを取得するSQLは末尾にAuthを付ける
 export const findByEmailAuth = async (email: string): Promise<UserAuth> => {
   const [rows, fields]: [RowDataPacket[number], any] = await promisePool.query(
-    'select id,name,email,password,created_at,updated_at from users where email = ?',
+    'select id,nickname,email,password,created_at,updated_at from users where email = ?',
     [email]
   )
 
@@ -48,7 +48,7 @@ export const createUser = async ({
 }) => {
   // TODO 型について　is not assignable to type 'ResultSetHeader'.
   const ret: any = await promisePool.query(
-    'insert into users(name,email,password) values(?,?,?)',
+    'insert into users(nickname,email,password) values(?,?,?)',
     [username, email, hashPassword]
   )
 
