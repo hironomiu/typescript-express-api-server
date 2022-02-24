@@ -26,8 +26,10 @@ create table user_notifications(
   id int UNSIGNED NOT NULL AUTO_INCREMENT,
   user_id int UNSIGNED NOT NULL,
   notification_id int UNSIGNED NOT NULL,
-  is_confirmed int NOT NULL DEFAULT 1, comment="1:true,0:false"
+  is_confirmed int NOT NULL DEFAULT 1 comment '1:true,0:false',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`),
+  FOREIGN KEY (`notification_id`) REFERENCES `notifications`(`id`)
 );
