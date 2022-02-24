@@ -30,7 +30,7 @@ beforeEach(async () => {
   const connection = mysql.createConnection(databaseConfig)
   connection.query('truncate table users')
   connection.query(
-    'insert into users(name,email,password) values(?,?,?),(?,?,?),(?,?,?)',
+    'insert into users(nickname,email,password) values(?,?,?),(?,?,?),(?,?,?)',
     [
       '太郎',
       'taro@example.com',
@@ -112,7 +112,7 @@ describe('POST /api/v1/auth/signin', () => {
     const obj = JSON.parse(response.text)
     expect(response.status).toBe(200)
     expect(obj.isSuccess).toBe(true)
-    expect(obj.name).toBe('太郎')
+    expect(obj.nickname).toBe('太郎')
     expect(obj.email).toBe('taro@example.com')
   })
 
