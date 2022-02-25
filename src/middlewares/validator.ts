@@ -11,6 +11,15 @@ export const checkEmailFormat = check('email')
   .isEmail()
   .withMessage('emailのフォーマットではありません。')
 
+export const checkPasswordIsEmpty = check('password')
+  .not()
+  .isEmpty()
+  .withMessage('passwordは必須項目です。')
+
+export const checkPasswordIsMinLength = check('password')
+  .isLength({ min: 8 })
+  .withMessage('passwordは最低8文字以上必須です。')
+
 export const validator = (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {

@@ -7,6 +7,8 @@ import {
   validator,
   checkEmailIsEmpty,
   checkEmailFormat,
+  checkPasswordIsEmpty,
+  checkPasswordIsMinLength,
 } from '../../middlewares/validator'
 
 const auth = Router()
@@ -14,7 +16,12 @@ const auth = Router()
 // ユーザ登録
 auth.post(
   '/signup',
-  [checkEmailIsEmpty, checkEmailFormat],
+  [
+    checkEmailIsEmpty,
+    checkEmailFormat,
+    checkPasswordIsEmpty,
+    checkPasswordIsMinLength,
+  ],
   validator,
   async (req: Request, res: Response, next: NextFunction) => {
     console.log('/signup')
