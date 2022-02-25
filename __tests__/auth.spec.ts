@@ -28,7 +28,17 @@ beforeEach(async () => {
   csrfToken = obj.csrfToken
 
   const connection = mysql.createConnection(databaseConfig)
+
+  connection.query('set foreign_key_checks = 0')
+  connection.query('truncate table user_notifications;')
+
+  connection.query(
+    'insert into user_notifications(user_id,notification_id,is_confirmed) values(?,?,?),(?,?,?),(?,?,?),(?,?,?)',
+    [1, 1, 0, 1, 2, 0, 1, 3, 0, 1, 4, 0]
+  )
+
   connection.query('truncate table users')
+
   connection.query(
     'insert into users(nickname,email,password) values(?,?,?),(?,?,?),(?,?,?)',
     [
