@@ -34,11 +34,8 @@ auth.post(
         })
       )
       console.log(req.body)
-      // TODO nickname対応
-      // const ret = await createUser({ ...req.body, hashPassword })
       const ret = await createUser({
-        username: req.body.nickname,
-        email: req.body.email,
+        ...req.body,
         hashPassword,
       })
       return res.json({
