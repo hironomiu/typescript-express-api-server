@@ -21,6 +21,7 @@ import notifications from './api/v1/notifications'
 import csrfToken from './api/v1/csrfToken'
 import auth from './api/v1/auth'
 import { findById } from './models/User'
+import morgan from 'morgan'
 
 export const setUp = () => {
   const app = express()
@@ -34,6 +35,9 @@ export const setUp = () => {
   }
   const MySQLStore = expressMySqlSession(expressSession)
   const sessionStore = new MySQLStore(options)
+
+  // ログ設定
+  app.use(morgan('combined'))
 
   // POST時にJSONを受ける際に必要
   app.use(express.json())
