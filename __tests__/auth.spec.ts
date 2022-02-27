@@ -1,6 +1,6 @@
 import supertest from 'supertest'
 import mysql from 'mysql2'
-import { setUp } from '../src/app'
+import { setUp, sessionStore } from '../src/app'
 import dotenv from 'dotenv'
 
 jest.setTimeout(20 * 1000)
@@ -65,6 +65,10 @@ afterEach((done) => {
 
   setTimeout(done, 1000)
   // console.log('afterEach called')
+})
+
+afterAll(() => {
+  sessionStore.close()
 })
 
 describe('POST /api/v1/auth/signup', () => {

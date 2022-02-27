@@ -23,18 +23,18 @@ import auth from './api/v1/auth'
 import { findById } from './models/User'
 import morgan from 'morgan'
 
+const options = {
+  host: DB_HOST,
+  port: parseInt(DB_PORT),
+  user: DB_USER,
+  password: DB_PASSWORD,
+  database: DB_DATABASE,
+}
+const MySQLStore = expressMySqlSession(expressSession)
+export const sessionStore = new MySQLStore(options)
+
 export const setUp = () => {
   const app = express()
-
-  const options = {
-    host: DB_HOST,
-    port: parseInt(DB_PORT),
-    user: DB_USER,
-    password: DB_PASSWORD,
-    database: DB_DATABASE,
-  }
-  const MySQLStore = expressMySqlSession(expressSession)
-  const sessionStore = new MySQLStore(options)
 
   // ログ設定
   app.use(morgan('combined'))
