@@ -3,9 +3,8 @@ import { findAll, updateIsConfirmedById } from '../../models/Notifications'
 
 const notifications = Router()
 
-// TODO 型
-notifications.route('/').get(async (req: any, res) => {
-  const rows = await findAll(req.session.userId)
+notifications.route('/').get(async (req: Request, res) => {
+  const rows = await findAll(parseInt(req.session.userId))
   console.log(req.session)
   console.log('rows:', rows)
 
