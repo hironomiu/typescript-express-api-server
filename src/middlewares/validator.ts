@@ -28,3 +28,14 @@ export const validator = (req: Request, res: Response, next: NextFunction) => {
   }
   return next()
 }
+
+// notification validator
+
+export const checkNotificationIdIsEmpty = check('id')
+  .not()
+  .isEmpty()
+  .withMessage('idは必須項目です。')
+
+export const checkNotificationIdIsNumber = check('id')
+  .isNumeric()
+  .withMessage('idは数値です。')

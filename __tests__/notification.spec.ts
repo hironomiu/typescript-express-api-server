@@ -6,7 +6,10 @@ import { setUp, sessionStore } from '../src/app'
 let csrfToken = ''
 let cookie = ''
 let app = setUp()
-
+const signInUser = {
+  email: 'taro@example.com',
+  password: 'password',
+}
 beforeEach(async () => {
   const response = await supertest(app).get('/api/v1/csrf-token')
   const obj = JSON.parse(response.text)
@@ -20,19 +23,14 @@ afterAll(() => {
   sessionStore.close()
 })
 
-describe('', () => {
+describe('notifications', () => {
   it('GET', async () => {
-    const user = {
-      email: 'taro@example.com',
-      password: 'password',
-    }
-
     const signinPostResponse = await supertest(app)
       .post('/api/v1/auth/signin')
       .set('Accept', 'application/json')
       .set('CSRF-Token', csrfToken)
       .set('Cookie', [cookie])
-      .send(user)
+      .send(signInUser)
     const data = signinPostResponse.headers['set-cookie'][0]
     const text = data.split(';')
     const signIncookie = text[0]
@@ -43,8 +41,11 @@ describe('', () => {
       .set('CSRF-Token', csrfToken)
       .set('Cookie', [cookie, signIncookie])
     const obj = JSON.parse(response.text)
-    console.log(obj)
     expect(response.status).toBe(200)
     expect(obj.isSuccess).toBe(true)
+    // console.log(obj)
+  })
+  it('PUT', () => {
+    // TODO 実装
   })
 })

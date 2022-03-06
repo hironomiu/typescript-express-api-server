@@ -15,6 +15,11 @@ const databaseConfig = {
   port: 3306,
 }
 
+const signInUser = {
+  email: 'taro@example.com',
+  password: 'password',
+}
+
 let csrfToken = ''
 let cookie = ''
 let app = setUp()
@@ -113,16 +118,16 @@ describe('POST /api/v1/auth/signup', () => {
 
 describe('POST /api/v1/auth/signin', () => {
   it('POST signin', async () => {
-    const user = {
-      email: 'taro@example.com',
-      password: 'password',
-    }
+    // const user = {
+    //   email: 'taro@example.com',
+    //   password: 'password',
+    // }
     const response = await supertest(app)
       .post('/api/v1/auth/signin')
       .set('Accept', 'application/json')
       .set('CSRF-Token', csrfToken)
       .set('Cookie', [cookie])
-      .send(user)
+      .send(signInUser)
     const obj = JSON.parse(response.text)
     expect(response.status).toBe(200)
     expect(obj.isSuccess).toBe(true)
@@ -150,16 +155,12 @@ describe('POST /api/v1/auth/signin', () => {
 
 describe('GET /api/v1/auth/signin', () => {
   it('GET signin', async () => {
-    const user = {
-      email: 'taro@example.com',
-      password: 'password',
-    }
     const signinPostResponse = await supertest(app)
       .post('/api/v1/auth/signin')
       .set('Accept', 'application/json')
       .set('CSRF-Token', csrfToken)
       .set('Cookie', [cookie])
-      .send(user)
+      .send(signInUser)
     const data = signinPostResponse.headers['set-cookie'][0]
     const text = data.split(';')
     const signIncookie = text[0]
