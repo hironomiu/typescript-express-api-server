@@ -23,6 +23,7 @@ afterAll(() => {
   sessionStore.close()
 })
 
+// TODO it毎のログイン処理をまとめる
 describe('notifications', () => {
   it('GET', async () => {
     const signinPostResponse = await supertest(app)
