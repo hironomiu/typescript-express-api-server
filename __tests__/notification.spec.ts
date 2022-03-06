@@ -45,7 +45,48 @@ describe('notifications', () => {
     expect(obj.isSuccess).toBe(true)
     // console.log(obj)
   })
-  it('PUT', () => {
-    // TODO 実装
+  it('PUT error case 1', async () => {
+    const signinPostResponse = await supertest(app)
+      .post('/api/v1/auth/signin')
+      .set('Accept', 'application/json')
+      .set('CSRF-Token', csrfToken)
+      .set('Cookie', [cookie])
+      .send(signInUser)
+    const data = signinPostResponse.headers['set-cookie'][0]
+    const text = data.split(';')
+    const signIncookie = text[0]
+
+    const response = await supertest(app)
+      .put('/api/v1/notifications')
+      .set('Accept', 'application/json')
+      .set('CSRF-Token', csrfToken)
+      .set('Cookie', [cookie, signIncookie])
+      .send({ id: '' })
+    const obj = JSON.parse(response.text)
+    expect(obj.isSuccess).toBe(false)
+    expect(obj.message).toBe('idは必須項目です。')
+    // console.log(response.text)
+  })
+  it('PUT error case 2', async () => {
+    const signinPostResponse = await supertest(app)
+      .post('/api/v1/auth/signin')
+      .set('Accept', 'application/json')
+      .set('CSRF-Token', csrfToken)
+      .set('Cookie', [cookie])
+      .send(signInUser)
+    const data = signinPostResponse.headers['set-cookie'][0]
+    const text = data.split(';')
+    const signIncookie = text[0]
+
+    const response = await supertest(app)
+      .put('/api/v1/notifications')
+      .set('Accept', 'application/json')
+      .set('CSRF-Token', csrfToken)
+      .set('Cookie', [cookie, signIncookie])
+      .send({ id: 'a' })
+    const obj = JSON.parse(response.text)
+    expect(obj.isSuccess).toBe(false)
+    expect(obj.message).toBe('idは数値です。')
+    console.log(response.text)
   })
 })
