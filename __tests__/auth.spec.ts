@@ -3,7 +3,7 @@ import mysql from 'mysql2'
 import { setUp, sessionStore } from '../src/app'
 import dotenv from 'dotenv'
 
-jest.setTimeout(20 * 1000)
+// jest.setTimeout(20 * 1000)
 
 dotenv.config()
 
