@@ -5,7 +5,7 @@ const users = Router()
 // TODO 実装
 users.route('/').get(async (req: Request, res) => {
   console.log(req.session.userId)
-  res.json({ isSuccess: true, message: 'api/v1/users' })
+  res.json({ isSuccess: true, message: '/api/v1/users' })
 })
 
 users.route('/:id').get(async (req, res) => {

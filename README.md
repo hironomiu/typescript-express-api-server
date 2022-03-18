@@ -133,3 +133,27 @@ session はローカルのインメモリで管理せず MySQL で管理させ�
 npm install express-mysql-session
 npm install -D @types/express-mysql-session
 ```
+
+### nodemon
+
+```
+npm install --save-dev nodemon
+```
+
+`nodemon.json`
+
+```
+{
+    "watch": [
+        "src"
+    ],
+    "ext": "ts",
+    "exec": "ts-node src/server.ts"
+}
+```
+
+`package.json` modify `serve`
+
+```
+"serve": "nodemon",
+```

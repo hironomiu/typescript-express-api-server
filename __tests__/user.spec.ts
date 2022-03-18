@@ -10,7 +10,7 @@ afterAll(() => {
 })
 
 describe('users', () => {
-  it('', async () => {
+  it('GET', async () => {
     const response = await supertest(app).get('/api/v1/users')
     const data = JSON.parse(response.text)
     expect(response.status).toBe(200)

@@ -95,6 +95,7 @@ auth.post(
 )
 
 // ログアウト
+// TODO 型
 auth.post('/signout', (req: any, res, next) => {
   // セッションの破棄
   req.session.destroy()

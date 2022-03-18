@@ -2,7 +2,7 @@
   "scripts": {
     "build": "tsc && cp .env ./build/.env",
     "actionsBuild": "tsc",
-    "serve": "ts-node src/server.ts",
+    "serve": "nodemon",
     "test": "jest --forceExit --detectOpenHandles --coverage --verbose"
   },
   "devDependencies": {
@@ -23,6 +23,7 @@
     "@types/passport-local": "^1.0.34",
     "@types/supertest": "^2.0.11",
     "jest": "^27.4.7",
+    "nodemon": "^2.0.15",
     "supertest": "^6.2.1",
     "ts-jest": "^27.1.2",
     "ts-node": "^10.4.0",
