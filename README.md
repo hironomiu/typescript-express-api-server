@@ -8,6 +8,8 @@ TypeScript + Express + Passport + mysql2 + bcrypt + express-validator + express-
 
 ## serve
 
+`nodemon`を利用し自動更新(設定は`Install Memo` -> `nodemon`を参照)
+
 ```
 npm run serve
 ```
