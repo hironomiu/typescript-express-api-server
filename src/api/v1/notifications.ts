@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import { Router, Request, Response } from 'express'
 import { findAll, updateIsConfirmedById } from '../../models/Notifications'
 import {
   validator,
@@ -23,20 +23,30 @@ notifications.get('/', async (req, res) => {
   }
 })
 
-// TODO エラー処理
-notifications.route('/').put(
-  [checkNotificationIdIsEmpty, checkNotificationIdIsNumber],
-  validator,
-  // TODO 型
-  async (req: any, res: any) => {
-    const rows = await updateIsConfirmedById(req.body.id)
-    console.log(rows)
-    res.json({
-      isSuccess: true,
-      message: 'success',
-    })
-  }
-)
+notifications
+  .route('/')
+  .put(
+    [checkNotificationIdIsEmpty, checkNotificationIdIsNumber],
+    validator,
+    async (req: Request, res: Response) => {
+      try {
+        // TODO 存在チェック
+        const rows = await updateIsConfirmedById(req.body.id)
+        console.log('Success:', rows)
+        res.json({
+          isSuccess: true,
+          message: 'success',
+        })
+      } catch (error) {
+        // TODO ログの出力先
+        console.log('Error:', error)
+        res.json({
+          isSuccess: false,
+          message: 'update error',
+        })
+      }
+    }
+  )
 
 // TODO 登録の正式実装
 notifications.route('/').post(async (req, res) => {
