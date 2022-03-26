@@ -2,7 +2,9 @@ import { Express, NextFunction, Response } from 'express'
 import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
 import bcrypt from 'bcrypt'
-import { findByEmailAuth, UserAuth } from './models/User'
+import { findByEmailAuth } from './models/User'
+import { UserAuth } from './types'
+import { Session } from 'inspector'
 
 const authPassport = (app: Express) => {
   app.use(passport.initialize())
@@ -58,11 +60,12 @@ const authPassport = (app: Express) => {
   )
 }
 
-// reqの型は以下では定義できなかった
+// TODO reqの型は以下では定義できなかった
 // interface User {}
 // interface AuthenticatedRequest extends Request {
 //   user: User
 // }
+
 export const checkAuthentication = (
   req: any,
   res: Response,

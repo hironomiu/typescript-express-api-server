@@ -44,6 +44,7 @@ auth.post(
         insertId: ret[0].insertId,
       })
     } catch (err) {
+      // TODO ログ出力
       console.log('/signup error:', err)
       return res
         .status(400)
@@ -96,6 +97,7 @@ auth.post(
 
 // ログアウト
 // TODO 型
+
 auth.post('/signout', (req: any, res, next) => {
   // セッションの破棄
   req.session.destroy()
