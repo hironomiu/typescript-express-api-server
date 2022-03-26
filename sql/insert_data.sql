@@ -13,7 +13,7 @@ insert into notifications(title,notification) values
 ("通知タイトル５","通知内容５あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめも");
 
 insert into user_notifications(user_id,notification_id,is_confirmed) values
-(1,1,0),
-(1,2,0),
-(1,3,0),
-(1,4,0);
+(1,1,false),
+(1,2,false),
+(1,3,false),
+(1,4,false);
